@@ -17,6 +17,8 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
+[assembly: MelonInfo(typeof(ClassicPreBornMod.ClassicPreBornMenu), "ClassicPreBornMenu", "1.0.0", "fizzjay")]
+
 namespace ClassicPreBornMod
 {
     public class ClassicPreBornMenu : MelonMod
@@ -654,4 +656,3 @@ namespace ClassicPreBornMod
 
 } // end namespace
 
-[assembly: MelonInfo(typeof(ClassicPreBornMod.ClassicPreBornMenu), "ClassicPreBornMenu", "1.0.0", "fizzjay")]
