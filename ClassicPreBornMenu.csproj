@@ -3,7 +3,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>7.3</LangVersion>
     <OutputType>Library</OutputType>
-    <AssemblyName>ClassicPreBornMenu</AssemblyName>
+    <AssemblyName>PreOrbusMenu</AssemblyName>
     <RootNamespace>ClassicPreBornMod</RootNamespace>
     <GenerateProgramFile>false</GenerateProgramFile>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
