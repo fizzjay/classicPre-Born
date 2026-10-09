@@ -6,6 +6,7 @@
     <AssemblyName>ClassicPreBornMenu</AssemblyName>
     <RootNamespace>ClassicPreBornMod</RootNamespace>
     <GenerateProgramFile>false</GenerateProgramFile>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <!-- If UnityEngine.dll is elsewhere, copy it here or adjust HintPath -->
   </PropertyGroup>
 
