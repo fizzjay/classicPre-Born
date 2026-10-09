@@ -22,9 +22,6 @@ namespace ClassicPreBornMod
     public class ClassicPreBornMenu : MelonMod
     {
         // ============== ATTRIBUTES ==============
-        [MelonInfo(typeof(ClassicPreBornMenu), "ClassicPreBornMenu", "1.0.0", "fizzjay")]
-        [MelonGameInfo(null, null)] // leave broad; adapts to any Unity game
-
         // ============== STATE ==============
         private bool menuOpen = false;
         private int tabIndex = 0; // 0 = World, 1 = Player, 2 = Fun
@@ -64,8 +61,8 @@ namespace ClassicPreBornMod
         // ============== INIT ==============
         public override void OnApplicationStart()
         {
-            MelonLogger.Msg("[ClassicPreBornMenu] Menu loaded — Press INSERT to open.");
-            MelonLogger.Msg("[ClassicPreBornMenu] Tan/Navy theme | World / Player / Fun tabs ready.");
+            LoggerInstance.Msg("[ClassicPreBornMenu] Menu loaded — Press INSERT to open.");
+            LoggerInstance.Msg("[ClassicPreBornMenu] Tan/Navy theme | World / Player / Fun tabs ready.");
         }
 
         // ============== UPDATE ==============
@@ -76,9 +73,9 @@ namespace ClassicPreBornMod
             {
                 menuOpen = !menuOpen;
                 if (menuOpen)
-                    MelonLogger.Msg("[Menu] Opened — Mouse + Keyboard fully active.");
+                    LoggerInstance.Msg("[Menu] Opened — Mouse + Keyboard fully active.");
                 else
-                    MelonLogger.Msg("[Menu] Closed.");
+                    LoggerInstance.Msg("[Menu] Closed.");
             }
 
             // Apply live tweaks when menu is open OR when toggled (so they work without menu)
@@ -269,7 +266,7 @@ namespace ClassicPreBornMod
             if (GUI.Button(fbRect, $"FULL BODY MODE  —  {(fullBodyMode ? "ON" : "OFF")}  (Precise Control)", MakeStyle(10, FontStyle.Bold)))
             {
                 fullBodyMode = !fullBodyMode;
-                MelonLogger.Msg($"[Player] FullBodyMode = {fullBodyMode}");
+                LoggerInstance.Msg($"[Player] FullBodyMode = {fullBodyMode}");
             }
             GUI.color = Color.white;
             yOff += 34f;
@@ -326,7 +323,7 @@ namespace ClassicPreBornMod
             if (GUI.Button(btn, $"PANKAKE  {(enabled ? "ON  (Mocking VR)" : "OFF")}", MakeStyle(11, FontStyle.Bold)))
             {
                 enabled = !enabled;
-                MelonLogger.Msg($"[Pankake] FlatScreen VR Mock = {enabled}");
+                LoggerInstance.Msg($"[Pankake] FlatScreen VR Mock = {enabled}");
             }
             GUI.color = Color.white;
 
@@ -335,7 +332,7 @@ namespace ClassicPreBornMod
             float oldS = strength;
             strength = GUI.HorizontalSlider(new Rect(x + 240, y + 70, 130f, 18), strength, 0.1f, 5.0f);
             if (Mathf.Abs(oldS - strength) > 0.01f && enabled)
-                MelonLogger.Msg($"[Pankake] Hand WASD Strength = {strength:F2}");
+                LoggerInstance.Msg($"[Pankake] Hand WASD Strength = {strength:F2}");
 
             // Info text
             GUI.color = CREAM;
@@ -493,7 +490,7 @@ namespace ClassicPreBornMod
                 if (godMode)
                 {
                     // Try to find Health / Damage components via reflection on common names
-                    var allComponents = UnityEngine.Object.FindObjectsOfType<Component>();
+                    var allComponents = UnityEngine.Object.FindObjectsOfType<UnityEngine.Component>();
                     foreach (var c in allComponents)
                     {
                         if (c == null) continue;
@@ -525,7 +522,7 @@ namespace ClassicPreBornMod
                     foreach (GameObject go in UnityEngine.Object.FindObjectsOfType<GameObject>())
                     {
                         if (go == null) continue;
-                        Component[] comps = go.GetComponents<Component>();
+                        UnityEngine.Component[] comps = go.GetComponents<UnityEngine.Component>();
                         foreach (var comp in comps)
                         {
                             if (comp == null) continue;
@@ -637,7 +634,7 @@ namespace ClassicPreBornMod
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Silent fail to avoid spam
             }
@@ -656,3 +653,5 @@ namespace ClassicPreBornMod
     } // end class
 
 } // end namespace
+
+[assembly: MelonInfo(typeof(ClassicPreBornMod.ClassicPreBornMenu), "ClassicPreBornMenu", "1.0.0", "fizzjay")]
