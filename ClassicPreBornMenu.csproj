@@ -26,6 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="ClassicPreBornMenu.cs" />
+    <!-- SDK auto-includes *.cs -->
   </ItemGroup>
 </Project>
