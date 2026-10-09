@@ -64,7 +64,7 @@ namespace ClassicPreBornMod
         // ============== INIT ==============
         public override void OnApplicationStart()
         {
-            LoggerInstance.Msg("[ClassicPreBornMenu] Menu loaded — Press INSERT to open.");
+            LoggerInstance.Msg("[ClassicPreBornMenu] Menu loaded - Press INSERT to open.");
             LoggerInstance.Msg("[ClassicPreBornMenu] Tan/Navy theme | World / Player / Fun tabs ready.");
         }
 
@@ -76,7 +76,7 @@ namespace ClassicPreBornMod
             {
                 menuOpen = !menuOpen;
                 if (menuOpen)
-                    LoggerInstance.Msg("[Menu] Opened — Mouse + Keyboard fully active.");
+                    LoggerInstance.Msg("[Menu] Opened - Mouse + Keyboard fully active.");
                 else
                     LoggerInstance.Msg("[Menu] Closed.");
             }
@@ -86,7 +86,6 @@ namespace ClassicPreBornMod
             ApplyWorldTweaks();
             ApplyFunTweaks();
 
-            // Auto-connect / skip start screen
             if (skipStartEnabled) AutoConnectSkip();
 
             // PANKAKE: Mock VR flat-screen + WASD hand control
@@ -208,7 +207,7 @@ namespace ClassicPreBornMod
             GUI.color = DARK_BLUE;
             GUI.Label(new Rect(panel.x + 12, panel.y + 14, panel.width - 24, 24), "WORLD", MakeStyle(14, FontStyle.Bold));
             GUI.color = CREAM;
-            GUI.Label(new Rect(panel.x + 12, panel.y + 46, panel.width - 24, 18), "Reserved — empty by request.", MakeStyle(11, FontStyle.Italic));
+            GUI.Label(new Rect(panel.x + 12, panel.y + 46, panel.width - 24, 18), "Reserved - empty by request.", MakeStyle(11, FontStyle.Italic));
             GUI.color = BRIGHT_BLUE;
             GUI.DrawTexture(new Rect(panel.x + 12, panel.y + 72, panel.width - 24, 2), Texture2D.whiteTexture);
             GUI.color = Color.white;
@@ -219,17 +218,16 @@ namespace ClassicPreBornMod
 
             // Header
             GUI.color = DARK_BLUE;
-            GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 8, 22), "PLAYER  —  Precise Body • Full Function • PANKAKE", MakeStyle(12, FontStyle.Bold));
+            GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 8, 22), "PLAYER  -  Precise Body • Full Function • PANKAKE", MakeStyle(12, FontStyle.Bold));
             GUI.color = Color.white;
             yOff += 30f;
 
-            // SKIP START / AUTO-CONNECT
             Rect skipRect = new Rect(panel.x + 8, yOff, panel.width - 16, 32f);
             GUI.color = skipStartEnabled ? DARK_BLUE : new Color(0.75f, 0.62f, 0.50f, 0.95f);
-            if (GUI.Button(skipRect, $"SKIP START — AUTO-CONNECT  {(skipStartEnabled ? \"ON\" : \"OFF\")}", MakeStyle(11, FontStyle.Bold)))
+            if (GUI.Button(skipRect, "SKIP START - AUTO-CONNECT  " + (skipStartEnabled ? "ON" : "OFF"), MakeStyle(11, FontStyle.Bold)))
             {
                 skipStartEnabled = !skipStartEnabled;
-                LoggerInstance.Msg($"[Skip] Auto-Connect = {skipStartEnabled}");
+                LoggerInstance.Msg("[Skip] Auto-Connect = " + skipStartEnabled);
             }
             GUI.color = Color.white;
             yOff += 36f;
@@ -237,7 +235,7 @@ namespace ClassicPreBornMod
             // ----- FULL BODY TOGGLE -----
             Rect fbRect = new Rect(panel.x + 8, yOff, panel.width - 16, 28f);
             GUI.color = fullBodyMode ? DARK_BLUE : new Color(0.75f, 0.62f, 0.50f, 0.9f);
-            if (GUI.Button(fbRect, $"FULL BODY MODE  —  {(fullBodyMode ? "ON" : "OFF")}  (Precise Control)", MakeStyle(10, FontStyle.Bold)))
+            if (GUI.Button(fbRect, $"FULL BODY MODE  -  {(fullBodyMode ? "ON" : "OFF")}  (Precise Control)", MakeStyle(10, FontStyle.Bold)))
             {
                 fullBodyMode = !fullBodyMode;
                 LoggerInstance.Msg($"[Player] FullBodyMode = {fullBodyMode}");
@@ -261,7 +259,7 @@ namespace ClassicPreBornMod
             DrawFloatRow(panel.x + 8, yOff, "Torso Rot", lblW, valW, 220f, ref torsoRot, -180f, 180f, 1f); yOff += 22f;
 
             // Arms
-            GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 16, 16), "ARMS — Left / Right (X / Y)", MakeStyle(9));
+            GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 16, 16), "ARMS - Left / Right (X / Y)", MakeStyle(9));
             yOff += 18f;
             DrawFloatRow(panel.x + 8, yOff, "L-Arm X", 70f, 120f, 180f, ref leftArmX, -1f, 1f, 0.05f); DrawFloatRow(panel.x + 8 + 190, yOff, "L-Arm Y", 70f, 110f, 170f, ref leftArmY, -1f, 1f, 0.05f); yOff += 22f;
             DrawFloatRow(panel.x + 8, yOff, "R-Arm X", 70f, 120f, 180f, ref rightArmX, -1f, 1f, 0.05f); DrawFloatRow(panel.x + 8 + 190, yOff, "R-Arm Y", 70f, 110f, 170f, ref rightArmY, -1f, 1f, 0.05f); yOff += 22f;
@@ -285,7 +283,7 @@ namespace ClassicPreBornMod
 
             // Title
             GUI.color = GOLD_AURA;
-            GUI.Label(new Rect(x + 10, y + 8, w - 20, 24), "PANKAKE  —  FLATSCREEN VR MOCK", MakeStyle(12, FontStyle.Bold));
+            GUI.Label(new Rect(x + 10, y + 8, w - 20, 24), "PANKAKE  -  FLATSCREEN VR MOCK", MakeStyle(12, FontStyle.Bold));
             GUI.color = DARK_BLUE;
             GUI.Label(new Rect(x + 10, y + 28, w - 20, 22), "WASD Hand Control  •  Mock VR  •  Flat Camera", MakeStyle(9));
             GUI.color = Color.white;
@@ -320,103 +318,11 @@ namespace ClassicPreBornMod
             GUI.color = DARK_BLUE;
             GUI.Label(new Rect(panel.x + 12, panel.y + 14, panel.width - 24, 24), "FUN", MakeStyle(14, FontStyle.Bold));
             GUI.color = CREAM;
-            GUI.Label(new Rect(panel.x + 12, panel.y + 46, panel.width - 24, 18), "Reserved — empty by request.", MakeStyle(11, FontStyle.Italic));
+            GUI.Label(new Rect(panel.x + 12, panel.y + 46, panel.width - 24, 18), "Reserved - empty by request.", MakeStyle(11, FontStyle.Italic));
             GUI.color = BRIGHT_BLUE;
             GUI.DrawTexture(new Rect(panel.x + 12, panel.y + 72, panel.width - 24, 2), Texture2D.whiteTexture);
             GUI.color = Color.white;
         }
-        private void DrawPankakePanel(float x, float y, float w, ref bool enabled, ref float strength)
-        {
-            float h = 130f;
-            // Background box tan with blue border
-            GUI.color = new Color(0.85f, 0.75f, 0.60f, 0.7f);
-            GUI.DrawTexture(new Rect(x, y, w, h), Texture2D.whiteTexture);
-            GUI.color = BRIGHT_BLUE;
-            GUI.DrawTexture(new Rect(x, y, w, 4f), Texture2D.whiteTexture);
-            GUI.color = Color.white;
-
-            // Title
-            GUI.color = GOLD_AURA;
-            GUI.Label(new Rect(x + 10, y + 8, w - 20, 24), "PANKAKE  —  FLATSCREEN VR MOCK", MakeStyle(12, FontStyle.Bold));
-            GUI.color = DARK_BLUE;
-            GUI.Label(new Rect(x + 10, y + 28, w - 20, 22), "WASD Hand Control  •  Mock VR  •  Flat Camera", MakeStyle(9));
-            GUI.color = Color.white;
-
-            // Toggle button
-            Rect btn = new Rect(x + 10, y + 50, 220f, 30f);
-            bool wasOn = enabled;
-            GUI.color = enabled ? DARK_BLUE : new Color(0.75f, 0.62f, 0.50f, 0.95f);
-            if (GUI.Button(btn, $"PANKAKE  {(enabled ? "ON  (Mocking VR)" : "OFF")}", MakeStyle(11, FontStyle.Bold)))
-            {
-                enabled = !enabled;
-                LoggerInstance.Msg($"[Pankake] FlatScreen VR Mock = {enabled}");
-            }
-            GUI.color = Color.white;
-
-            // Strength slider
-            GUI.Label(new Rect(x + 240, y + 52, 120f, 22), "Hand Strength", MakeStyle(9));
-            float oldS = strength;
-            strength = GUI.HorizontalSlider(new Rect(x + 240, y + 70, 130f, 18), strength, 0.1f, 5.0f);
-            if (Mathf.Abs(oldS - strength) > 0.01f && enabled)
-                LoggerInstance.Msg($"[Pankake] Hand WASD Strength = {strength:F2}");
-
-            // Info text
-            GUI.color = CREAM;
-            GUI.Label(new Rect(x + 10, y + 82, w - 20, 32), "When ON: Camera forced flat (no stereo) • WASD moves virtual hands  •  Full body body tracking simulates VR posture. Use Mouse + Keyboard freely in this UI.", MakeStyle(9));
-            GUI.color = Color.white;
-        }
-
-        // ============== DRAW FUN ==============
-        private void DrawFunTab(Rect panel)
-        {
-            float yOff = panel.y + 8f;
-
-            GUI.color = DARK_BLUE;
-            GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 8, 22), "FUN  —  Speed • Fly • Jump • God", MakeStyle(12, FontStyle.Bold));
-            GUI.color = Color.white;
-            yOff += 30f;
-
-            // Speed
-            DrawFloatRow(panel.x + 8, yOff, "Speed Mult", 100f, 160f, 180f, ref speedMult, 0.1f, 10f, 0.1f); yOff += 26f;
-
-            // Toggles in a grid 2x2
-            float btnW = (panel.width - 20) / 2f;
-            float btnH = 32f;
-
-            float[] xOffs = new float[] { 8, 8 + btnW + 4 };
-            float[] yOffs = new float[] { yOff, yOff + btnH + 6 };
-
-            // Row 1
-            DrawToggle(panel.x + xOffs[0], yOffs[0], btnW, btnH, "FLY MODE", flyEnabled, v => { flyEnabled = v; });
-            DrawToggle(panel.x + xOffs[1], yOffs[0], btnW, btnH, "INFINITE JUMP", infiniteJump, v => { infiniteJump = v; });
-
-            // Row 2
-            DrawToggle(panel.x + xOffs[0], yOffs[1], btnW, btnH, "GOD MODE", godMode, v => { godMode = v; });
-            DrawToggle(panel.x + xOffs[1], yOffs[1], btnW, btnH, "NO CLIP", false, v => { /* placeholder for future no-clip hook */ });
-
-            yOff += btnH * 2 + 12 + 14;
-
-            // Status
-            GUI.color = new Color(0.95f, 0.85f, 0.65f, 0.35f);
-            GUI.DrawTexture(new Rect(panel.x + 8, yOff + 4, panel.width - 16, 36), Texture2D.whiteTexture);
-            GUI.color = DARK_BLUE;
-            GUI.Label(new Rect(panel.x + 16, yOff + 8, panel.width - 32, 28), $"Active  •  Speed={speedMult:F2}x  Fly={(flyEnabled?"ON":"OFF")}  Jump={(infiniteJump?"ON":"OFF")}  God={(godMode?"ON":"OFF")}", MakeStyle(9));
-            GUI.color = Color.white;
-        }
-
-        // ============== HELPERS ==============
-        private GUIStyle MakeStyle(int sz, FontStyle style = FontStyle.Normal)
-        {
-            return new GUIStyle(GUI.skin.label)
-            {
-                fontSize = sz,
-                fontStyle = style,
-                normal = new GUIStyleState() { textColor = CREAM },
-                alignment = TextAnchor.MiddleLeft,
-                wordWrap = true,
-            };
-        }
-
         private void DrawFloatRow(float x, float y, string label, float lblW, float valW, float sliderW, ref float val, float min, float max, float step)
         {
             float inputW = 80f;
@@ -492,7 +398,7 @@ namespace ClassicPreBornMod
             {
                 if (fullBodyMode)
                 {
-                    // Enable full body — try to disable ragdoll / enable animation
+                    // Enable full body - try to disable ragdoll / enable animation
                     // We use reflection to find common player controllers
                     foreach (GameObject root in UnityEngine.Object.FindObjectsOfType<GameObject>())
                     {
@@ -597,12 +503,10 @@ namespace ClassicPreBornMod
             catch { }
         }
 
-
         private void AutoConnectSkip()
         {
             try
             {
-                // Try to disable title/lobby screens by name patterns
                 string[] skipNames = new string[] { "Title", "Lobby", "Login", "StartScreen", "MenuScreen", "MainMenu", "PlayButton", "ConnectButton", "LoginButton" };
                 foreach (GameObject go in UnityEngine.Object.FindObjectsOfType<GameObject>())
                 {
@@ -613,20 +517,15 @@ namespace ClassicPreBornMod
                         if (n.IndexOf(s, System.StringComparison.OrdinalIgnoreCase) >= 0)
                         {
                             go.SetActive(false);
-                            // Try to find and invoke button click / connection
                             UnityEngine.UI.Button btn = go.GetComponent<UnityEngine.UI.Button>();
-                            if (btn != null && btn.onClick != null)
-                            {
-                                btn.onClick.Invoke();
-                            }
+                            if (btn != null && btn.onClick != null) btn.onClick.Invoke();
                         }
                     }
                 }
-                // Try to call Connect on common network managers
                 foreach (GameObject go in UnityEngine.Object.FindObjectsOfType<GameObject>())
                 {
                     if (go == null) continue;
-                    Component[] comps = go.GetComponents<UnityEngine.Component>();
+                    UnityEngine.Component[] comps = go.GetComponents<UnityEngine.Component>();
                     foreach (UnityEngine.Component c in comps)
                     {
                         if (c == null) continue;
@@ -690,7 +589,7 @@ namespace ClassicPreBornMod
                     rightHand.transform.localRotation = Quaternion.Euler(15f - h * 10f, -20f - v * 10f, 0f);
                 }
 
-                // 3. If no hand objects found, create visual proxy (optional) — here we just modify camera view to simulate flat VR
+                // 3. If no hand objects found, create visual proxy (optional) - here we just modify camera view to simulate flat VR
                 // We can also apply to any object with "Hand" in name
                 foreach (GameObject go in UnityEngine.Object.FindObjectsOfType<GameObject>())
                 {
