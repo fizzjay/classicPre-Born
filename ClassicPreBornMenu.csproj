@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <OutputType>Library</OutputType>
+    <AssemblyName>ClassicPreBornMenu</AssemblyName>
+    <RootNamespace>ClassicPreBornMod</RootNamespace>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- Disable default app entry -->
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference MelonLoader 0.5.1 -->
+    <Reference Include="MelonLoader">
+      <HintPath>MelonLoader.dll</HintPath>
+    </Reference>
+    <!-- Reference the game's Unity assembly -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>Assembly-CSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="ClassicPreBornMenu.cs" />
+  </ItemGroup>
+</Project>
