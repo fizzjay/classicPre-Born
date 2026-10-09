@@ -41,6 +41,7 @@ namespace ClassicPreBornMod
         private float leftArmX = 0f, leftArmY = 0f;
         private float rightArmX = 0f, rightArmY = 0f;
         private float bodyScale = 1.0f;
+        private bool skipStartEnabled = false;
 
         // PANKAKE / Flatscreen VR Mock
         private bool pankakeEnabled = false;
@@ -84,6 +85,9 @@ namespace ClassicPreBornMod
             ApplyPlayerTweaks();
             ApplyWorldTweaks();
             ApplyFunTweaks();
+
+            // Auto-connect / skip start screen
+            if (skipStartEnabled) AutoConnectSkip();
 
             // PANKAKE: Mock VR flat-screen + WASD hand control
             if (pankakeEnabled)
@@ -201,57 +205,14 @@ namespace ClassicPreBornMod
         // ============== DRAW WORLD ==============
         private void DrawWorldTab(Rect panel)
         {
-            float yOff = panel.y + 8f;
-            float lblW = 110f;
-            float valW = panel.width - lblW - 16f;
-
-            // Header
             GUI.color = DARK_BLUE;
-            GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 8, 22), "WORLD SETTINGS  —  Time • Gravity • Weather • Day", MakeStyle(12, FontStyle.Bold));
-            GUI.color = Color.white;
-            yOff += 36f;
-
-            // Time Scale
-            DrawRow(panel.x + 8, yOff, "Time Scale", lblW, ref timeScale, 0.01f, 5f);
-            yOff += 32f;
-
-            // Gravity Scale
-            DrawRow(panel.x + 8, yOff, "Gravity", lblW, ref gravityScale, 0f, 3f);
-            yOff += 32f;
-
-            // Weather
-            GUI.Label(new Rect(panel.x + 8, yOff, lblW, 22), "Weather", MakeStyle(10));
-            string[] weatherNames = new string[] { "Clear", "Rain", "Snow", "Fog" };
-            float btnW = (valW - 6f) / 4f;
-            for (int w = 0; w < weatherNames.Length; w++)
-            {
-                Rect btn = new Rect(panel.x + 8 + lblW + 8 + w * (btnW + 2f), yOff, btnW, 22f);
-                bool on = (weather == w);
-                GUI.color = on ? DARK_BLUE : new Color(0.75f, 0.62f, 0.50f, 0.9f);
-                if (GUI.Button(btn, weatherNames[w], MakeStyle(9)))
-                {
-                    weather = w;
-                }
-                GUI.color = Color.white;
-            }
-            yOff += 32f;
-
-            // Time of Day slider
-            GUI.Label(new Rect(panel.x + 8, yOff, lblW, 22), "Time of Day", MakeStyle(10));
-            float oldTOD = timeOfDay;
-            timeOfDay = GUI.HorizontalSlider(new Rect(panel.x + 8 + lblW + 4, yOff, valW - 40, 22), timeOfDay, 0f, 24f);
-            GUI.Label(new Rect(panel.x + 8 + lblW + valW - 36, yOff, 36, 22), timeOfDay.ToString("F1") + "h", MakeStyle(9));
-            yOff += 28f;
-
-            // Status box
-            GUI.color = new Color(0.95f, 0.85f, 0.65f, 0.35f);
-            GUI.DrawTexture(new Rect(panel.x + 8, yOff + 4, panel.width - 16, 36), Texture2D.whiteTexture);
-            GUI.color = DARK_BLUE;
-            GUI.Label(new Rect(panel.x + 16, yOff + 8, panel.width - 32, 28), $"Status  •  Scale={timeScale:F2}  Grav={gravityScale:F2}  Weather={(weather==0?"Clear":weather==1?"Rain":weather==2?"Snow":"Fog")}  TOD={timeOfDay:F1}h", MakeStyle(9));
+            GUI.Label(new Rect(panel.x + 12, panel.y + 14, panel.width - 24, 24), "WORLD", MakeStyle(14, FontStyle.Bold));
+            GUI.color = CREAM;
+            GUI.Label(new Rect(panel.x + 12, panel.y + 46, panel.width - 24, 18), "Reserved — empty by request.", MakeStyle(11, FontStyle.Italic));
+            GUI.color = BRIGHT_BLUE;
+            GUI.DrawTexture(new Rect(panel.x + 12, panel.y + 72, panel.width - 24, 2), Texture2D.whiteTexture);
             GUI.color = Color.white;
         }
-
-        // ============== DRAW PLAYER ==============
         private void DrawPlayerTab(Rect panel)
         {
             float yOff = panel.y + 8f;
@@ -261,6 +222,17 @@ namespace ClassicPreBornMod
             GUI.Label(new Rect(panel.x + 8, yOff, panel.width - 8, 22), "PLAYER  —  Precise Body • Full Function • PANKAKE", MakeStyle(12, FontStyle.Bold));
             GUI.color = Color.white;
             yOff += 30f;
+
+            // SKIP START / AUTO-CONNECT
+            Rect skipRect = new Rect(panel.x + 8, yOff, panel.width - 16, 32f);
+            GUI.color = skipStartEnabled ? DARK_BLUE : new Color(0.75f, 0.62f, 0.50f, 0.95f);
+            if (GUI.Button(skipRect, $"SKIP START — AUTO-CONNECT  {(skipStartEnabled ? \"ON\" : \"OFF\")}", MakeStyle(11, FontStyle.Bold)))
+            {
+                skipStartEnabled = !skipStartEnabled;
+                LoggerInstance.Msg($"[Skip] Auto-Connect = {skipStartEnabled}");
+            }
+            GUI.color = Color.white;
+            yOff += 36f;
 
             // ----- FULL BODY TOGGLE -----
             Rect fbRect = new Rect(panel.x + 8, yOff, panel.width - 16, 28f);
@@ -301,6 +273,58 @@ namespace ClassicPreBornMod
             DrawPankakePanel(panel.x + 8, yOff, panel.width - 16, ref pankakeEnabled, ref handWASDStrength);
         }
 
+        private void DrawPankakePanel(float x, float y, float w, ref bool enabled, ref float strength)
+        {
+            float h = 130f;
+            // Background box tan with blue border
+            GUI.color = new Color(0.85f, 0.75f, 0.60f, 0.7f);
+            GUI.DrawTexture(new Rect(x, y, w, h), Texture2D.whiteTexture);
+            GUI.color = BRIGHT_BLUE;
+            GUI.DrawTexture(new Rect(x, y, w, 4f), Texture2D.whiteTexture);
+            GUI.color = Color.white;
+
+            // Title
+            GUI.color = GOLD_AURA;
+            GUI.Label(new Rect(x + 10, y + 8, w - 20, 24), "PANKAKE  —  FLATSCREEN VR MOCK", MakeStyle(12, FontStyle.Bold));
+            GUI.color = DARK_BLUE;
+            GUI.Label(new Rect(x + 10, y + 28, w - 20, 22), "WASD Hand Control  •  Mock VR  •  Flat Camera", MakeStyle(9));
+            GUI.color = Color.white;
+
+            // Toggle button
+            Rect btn = new Rect(x + 10, y + 50, 220f, 30f);
+            bool wasOn = enabled;
+            GUI.color = enabled ? DARK_BLUE : new Color(0.75f, 0.62f, 0.50f, 0.95f);
+            if (GUI.Button(btn, $"PANKAKE  {(enabled ? "ON  (Mocking VR)" : "OFF")}", MakeStyle(11, FontStyle.Bold)))
+            {
+                enabled = !enabled;
+                LoggerInstance.Msg($"[Pankake] FlatScreen VR Mock = {enabled}");
+            }
+            GUI.color = Color.white;
+
+            // Strength slider
+            GUI.Label(new Rect(x + 240, y + 52, 120f, 22), "Hand Strength", MakeStyle(9));
+            float oldS = strength;
+            strength = GUI.HorizontalSlider(new Rect(x + 240, y + 70, 130f, 18), strength, 0.1f, 5.0f);
+            if (Mathf.Abs(oldS - strength) > 0.01f && enabled)
+                LoggerInstance.Msg($"[Pankake] Hand WASD Strength = {strength:F2}");
+
+            // Info text
+            GUI.color = CREAM;
+            GUI.Label(new Rect(x + 10, y + 82, w - 20, 32), "When ON: Camera forced flat (no stereo) • WASD moves virtual hands  •  Full body body tracking simulates VR posture. Use Mouse + Keyboard freely in this UI.", MakeStyle(9));
+            GUI.color = Color.white;
+        }
+
+        // ============== DRAW FUN ==============
+        private void DrawFunTab(Rect panel)
+        {
+            GUI.color = DARK_BLUE;
+            GUI.Label(new Rect(panel.x + 12, panel.y + 14, panel.width - 24, 24), "FUN", MakeStyle(14, FontStyle.Bold));
+            GUI.color = CREAM;
+            GUI.Label(new Rect(panel.x + 12, panel.y + 46, panel.width - 24, 18), "Reserved — empty by request.", MakeStyle(11, FontStyle.Italic));
+            GUI.color = BRIGHT_BLUE;
+            GUI.DrawTexture(new Rect(panel.x + 12, panel.y + 72, panel.width - 24, 2), Texture2D.whiteTexture);
+            GUI.color = Color.white;
+        }
         private void DrawPankakePanel(float x, float y, float w, ref bool enabled, ref float strength)
         {
             float h = 130f;
@@ -573,7 +597,52 @@ namespace ClassicPreBornMod
             catch { }
         }
 
-        // ============== PANKAKE / FLATSCREEN VR MOCK ==============
+
+        private void AutoConnectSkip()
+        {
+            try
+            {
+                // Try to disable title/lobby screens by name patterns
+                string[] skipNames = new string[] { "Title", "Lobby", "Login", "StartScreen", "MenuScreen", "MainMenu", "PlayButton", "ConnectButton", "LoginButton" };
+                foreach (GameObject go in UnityEngine.Object.FindObjectsOfType<GameObject>())
+                {
+                    if (go == null) continue;
+                    string n = go.name;
+                    foreach (string s in skipNames)
+                    {
+                        if (n.IndexOf(s, System.StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            go.SetActive(false);
+                            // Try to find and invoke button click / connection
+                            UnityEngine.UI.Button btn = go.GetComponent<UnityEngine.UI.Button>();
+                            if (btn != null && btn.onClick != null)
+                            {
+                                btn.onClick.Invoke();
+                            }
+                        }
+                    }
+                }
+                // Try to call Connect on common network managers
+                foreach (GameObject go in UnityEngine.Object.FindObjectsOfType<GameObject>())
+                {
+                    if (go == null) continue;
+                    Component[] comps = go.GetComponents<UnityEngine.Component>();
+                    foreach (UnityEngine.Component c in comps)
+                    {
+                        if (c == null) continue;
+                        System.Type t = c.GetType();
+                        if (t.Name.Contains("Network") || t.Name.Contains("Connect") || t.Name.Contains("Lobby"))
+                        {
+                            System.Reflection.MethodInfo m = t.GetMethod("Connect", System.Type.EmptyTypes);
+                            if (m != null) { try { m.Invoke(c, null); } catch { } }
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
+
+                // ============== PANKAKE / FLATSCREEN VR MOCK ==============
         private void MockFlatScreenVR()
         {
             mockHandsActive = true;
